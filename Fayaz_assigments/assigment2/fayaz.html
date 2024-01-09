@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countries and Currencies</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1em;
+            text-align: center;
+        }
+
+        #countryList {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 2em;
+        }
+
+        .country {
+            background-color: darkgray;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1em;
+            margin: 1em;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Countries and Currencies</h1>
+    </header>
+
+    <div id="countryList"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const countryListContainer = document.getElementById('countryList');
+
+            // API endpoint for Restcountries
+            const apiEndpoint = 'https://restcountries.com/v2/all';
+
+            // Fetch country data from the API
+            fetch(apiEndpoint)
+                .then(response => response.json())
+                .then(data => {
+                    // Process the country data and render it on the page
+                    data.forEach(country => {
+                        const countryElement = document.createElement('div');
+                        countryElement.classList.add('country');
+                        countryElement.innerHTML = `
+                            <h2>${country.name}</h2>
+                            <p>Capital: ${country.capital}</p>
+                            <p>Currency: ${country.currencies[0].name} (${country.currencies[0].code})</p>
+                            <p>Region: ${country.region}</p>
+                        `;
+                        countryListContainer.appendChild(countryElement);
+                    });
+                })
+                .catch(error => console.error('Error fetching country data:', error));
+        });
+    </script>
+</body>
+</html>
